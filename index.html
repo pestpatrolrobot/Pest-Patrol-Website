@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest Patrol | Automated Pesticide Car</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0b2f57;
+            --blue: #14568f;
+            --green: #2f7d4f;
+            --red: #c73535;
+            --ink: #172033;
+        }
+        .hero-bg {
+            background:
+                radial-gradient(circle at 85% 15%, rgba(47, 125, 79, 0.16), transparent 28%),
+                linear-gradient(135deg, #f8fafc 0%, #eef4f8 58%, #e7f0e9 100%);
+        }
+        .navy-blue { background-color: var(--navy); }
+        .accent-red { background-color: var(--red); }
+        .smooth-scroll { scroll-behavior: smooth; }
+        #team-section { display: none; }
+        .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12); }
+        .robot-visual {
+            position: relative;
+            min-height: 420px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #0b2f57;
+        }
+        .robot-visual::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 42px 42px;
+            opacity: 0.45;
+            z-index: 2;
+        }
+        .robot-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .robot-slide.active {
+            opacity: 1;
+        }
+        .robot-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(11, 47, 87, 0.08), rgba(11, 47, 87, 0.55));
+            z-index: 1;
+        }
+        .slide-dot {
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .slide-dot.active {
+            width: 1.7rem;
+            background: #ffffff;
+        }
+        .slide-info {
+            position: relative;
+            background: rgba(8, 18, 32, 0.34);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-top: 2px solid rgba(255, 255, 255, 0.65);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+        }
+        .slide-info::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0.75rem;
+            right: 0.75rem;
+            height: 0.45rem;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.62) 0 1px,
+                    transparent 1px 10px
+                );
+            opacity: 0.9;
+            pointer-events: none;
+        }
+        .team-card {
+            border-width: 2px;
+            border-radius: 0.9rem;
+        }
+        .team-leader {
+            border-color: #dc2626;
+            background: linear-gradient(180deg, #fff1f2, #ffffff);
+        }
+        .team-architect {
+            border-color: #1d4ed8;
+            background: linear-gradient(180deg, #eff6ff, #ffffff);
+        }
+        .team-engineer {
+            border-color: #15803d;
+            background: linear-gradient(180deg, #f0fdf4, #ffffff);
+        }
+        .team-support {
+            border-color: #ca8a04;
+            background: linear-gradient(180deg, #fefce8, #ffffff);
+        }
+        .member-photo {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #e5e7eb;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+        }
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+        .member-photo::before {
+            content: attr(data-initials);
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #dbeafe, #f1f5f9);
+            color: var(--navy);
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+    </style>
+</head>
+<body class="smooth-scroll font-sans text-gray-800">
+
+    <nav class="navy-blue text-white sticky top-0 z-50 px-6 shadow-lg">
+        <div class="max-w-7xl mx-auto py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-black tracking-tighter uppercase italic">Pest Patrol</a>
+            <div class="hidden md:flex items-center gap-7 text-sm font-semibold uppercase">
+                <a href="#home" class="hover:text-blue-200">Home</a>
+                <a href="#about" class="hover:text-blue-200">About Us</a>
+                <a href="#technology" class="hover:text-blue-200">Technology</a>
+                <button onclick="toggleTeam()" class="hover:text-blue-200 uppercase font-semibold">Team</button>
+                <a href="#contact" class="bg-white text-blue-900 px-4 py-2 rounded-md hover:bg-blue-100">Contact</a>
+            </div>
+            <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-md border border-white/20" aria-label="Open navigation">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/15 py-4 text-sm font-bold uppercase">
+            <a href="#home" class="block py-2">Home</a>
+            <a href="#about" class="block py-2">About Us</a>
+            <a href="#technology" class="block py-2">Technology</a>
+            <button onclick="toggleTeam()" class="block py-2 uppercase font-bold">Team</button>
+            <a href="#contact" class="block py-2">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-bg px-6 py-20 md:py-24">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+            <p class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-green-700 shadow-sm mb-5">
+                <i class="fas fa-leaf"></i> Autonomous Crop Protection
+            </p>
+            <h1 class="text-5xl md:text-7xl font-black text-blue-950 leading-none mb-5 uppercase italic">
+                Pest Patrol
+            </h1>
+            <p class="text-2xl md:text-3xl font-black text-red-600 uppercase mb-5">
+                The Future of Crop Intelligence
+            </p>
+            <p class="text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
+                A student-built automated pesticide car concept for safer spraying, controlled crop treatment, and more efficient farm support.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="toggleTeam()" class="accent-red text-white px-6 py-4 rounded-md font-bold uppercase hover:bg-red-700 transition-all shadow-md">Meet the Team</button>
+                <a href="#technology" class="border-2 border-blue-900 text-blue-900 px-6 py-4 rounded-md font-bold uppercase hover:bg-blue-900 hover:text-white transition-all text-center">Explore the Tech</a>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mt-10 max-w-lg">
+                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                    <div class="text-2xl font-black text-blue-900">11</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Members</div>
+                </div>
+                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                    <div class="text-2xl font-black text-blue-900">Auto</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Spraying</div>
+                </div>
+                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                    <div class="text-2xl font-black text-blue-900">Eco</div>
+                    <div class="text-[10px] uppercase font-bold text-slate-500">Focused</div>
+                </div>
+            </div>
+        </div>
+        <div class="robot-visual shadow-2xl border-4 border-white">
+            <img src="images/robot/robot-1.jpg" alt="Pest Patrol robot prototype angle 1" class="robot-slide active">
+            <img src="images/robot/robot-2.jpg" alt="Pest Patrol robot prototype angle 2" class="robot-slide">
+            <img src="images/robot/robot-3.jpg" alt="Pest Patrol robot prototype angle 3" class="robot-slide">
+            <div class="absolute top-6 right-6 z-10 flex gap-2" aria-label="Robot slideshow status">
+                <span class="slide-dot active"></span>
+                <span class="slide-dot"></span>
+                <span class="slide-dot"></span>
+            </div>
+            <div class="slide-info absolute bottom-3 left-3 right-3 z-10 backdrop-blur-sm px-3 pb-2 pt-3 rounded-md">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-1 md:gap-3">
+                    <div>
+                        <p id="robot-slide-label" class="text-[8px] font-black text-red-200 uppercase tracking-widest">Automated Spray System</p>
+                        <p id="robot-slide-title" class="text-xs md:text-sm font-black text-white uppercase">Controlled pesticide application</p>
+                    </div>
+                    <p id="robot-slide-description" class="text-[10px] text-slate-100 leading-snug md:max-w-sm">The prototype is designed to carry pesticide and spray crops through a mounted delivery system.</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-16 items-center">
+                <div class="md:w-1/2">
+                    <h2 class="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Our Mission</h2>
+                    <h3 class="text-4xl font-bold text-blue-900 mb-6 uppercase italic">Engineering a Sustainable Tomorrow</h3>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Pest Patrol was born from a singular vision: to bridge the gap between manual pesticide application and practical automation. Our system is designed as a mobile spraying car that helps farmers apply treatment more efficiently.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="border-l-4 border-red-600 pl-4">
+                            <h4 class="font-bold text-blue-900 uppercase text-sm">Efficiency</h4>
+                            <p class="text-xs text-gray-500 italic">Supporting consistent spraying while reducing unnecessary pesticide use.</p>
+                        </div>
+                        <div class="border-l-4 border-blue-900 pl-4">
+                            <h4 class="font-bold text-blue-900 uppercase text-sm">Reliability</h4>
+                            <p class="text-xs text-gray-500 italic">Consistent performance across all terrain conditions.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 bg-gray-100 p-8 rounded-xl border-b-8 border-blue-900 shadow-xl">
+                    <h4 class="font-black text-blue-900 uppercase mb-4 tracking-tighter">Why Pest Patrol?</h4>
+                    <p class="text-sm text-gray-600 italic">"In an era where food security is paramount, we focus on a practical automated pesticide car that can help protect crops with controlled movement and spraying."</p>
+                    <p class="mt-4 text-xs font-bold text-red-600 uppercase">- The Engineering Council</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology" class="py-24 px-6 bg-gray-50 border-t border-b">
+        <div class="max-w-6xl mx-auto text-center mb-16">
+            <h2 class="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Core Technology</h2>
+            <h3 class="text-4xl font-bold text-blue-900 uppercase italic">Next-Gen Capability</h3>
+        </div>
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-md border-b-4 border-blue-900 card-hover">
+                <div class="w-12 h-12 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mb-6"><i class="fas fa-eye text-2xl"></i></div>
+                <h4 class="font-bold text-blue-900 uppercase mb-2">Spray Control</h4>
+                <p class="text-sm text-gray-600 leading-relaxed italic">Designed to release pesticide through a controlled spraying mechanism for crop treatment.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-md border-b-4 border-green-700 card-hover">
+                <div class="w-12 h-12 rounded-lg bg-green-50 text-green-700 flex items-center justify-center mb-6"><i class="fas fa-microchip text-2xl"></i></div>
+                <h4 class="font-bold text-blue-900 uppercase mb-2">Automated Operation</h4>
+                <p class="text-sm text-gray-600 leading-relaxed italic">Built to reduce manual spraying effort through a mobile pesticide car platform.</p>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-md border-b-4 border-blue-900 card-hover">
+                <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-900 flex items-center justify-center mb-6"><i class="fas fa-robot text-2xl"></i></div>
+                <h4 class="font-bold text-blue-900 uppercase mb-2">Mobile Chassis</h4>
+                <p class="text-sm text-gray-600 leading-relaxed italic">A compact car base designed to move through farm areas while carrying the spray system.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="team-section" class="py-20 px-6 bg-white border-b">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-blue-900 mb-4 uppercase italic">Meet Our Team</h2>
+            <p class="text-gray-500 mb-12 italic text-lg tracking-wide">The Innovators of Pest Patrol</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                
+                <div class="team-card team-leader p-6 shadow-md card-hover">
+                    <div class="member-photo mb-4" data-initials="KA">
+                        <img src="images/team/kiel-alcantara.jpg" alt="Kiel Alcantara">
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-900">Kiel Alcantara</h4>
+                    <p class="text-[10px] uppercase text-red-600 font-black mb-1">Leader | Engineer</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-architect p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="CT">
+                        <img src="images/team/curt-tataro.jpg" alt="Curt Tataro">
+                    </div>
+                    <h4 class="text-sm font-bold">Curt Tataro</h4>
+                    <p class="text-[10px] text-blue-900 font-bold uppercase mb-1">Project Architect</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-architect p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="JV">
+                        <img src="images/team/jared-vallangca.jpg" alt="Jared Vallangca">
+                    </div>
+                    <h4 class="text-sm font-bold">Jared Vallangca</h4>
+                    <p class="text-[10px] text-blue-900 font-bold uppercase mb-1">Project Architect</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-architect p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="AR">
+                        <img src="images/team/angelo-rivera.jpg" alt="Angelo Rivera">
+                    </div>
+                    <h4 class="text-sm font-bold">Angelo Rivera</h4>
+                    <p class="text-[10px] text-blue-900 font-bold uppercase mb-1">Project Architect</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-architect p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="MD">
+                        <img src="images/team/marinella-dela-cruz.jpg" alt="Marinella Dela Cruz">
+                    </div>
+                    <h4 class="text-sm font-bold">Marinella Dela Cruz</h4>
+                    <p class="text-[10px] text-blue-900 font-bold uppercase mb-1">Project Architect</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-architect p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="SV">
+                        <img src="images/team/shaine-vasquez.jpg" alt="Shaine Vasquez">
+                    </div>
+                    <h4 class="text-sm font-bold">Shaine Vasquez</h4>
+                    <p class="text-[10px] text-blue-900 font-bold uppercase mb-1">Project Architect</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-engineer p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="JA">
+                        <img src="images/team/jewel-arce.jpg" alt="Jewel Arce">
+                    </div>
+                    <h4 class="text-sm font-bold">Jewel Arce</h4>
+                    <p class="text-[10px] text-green-700 font-bold uppercase mb-1">Engineer</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-engineer p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="JH">
+                        <img src="images/team/john-paul-halili.jpg" alt="John Paul Halili">
+                    </div>
+                    <h4 class="text-sm font-bold">John Paul Halili</h4>
+                    <p class="text-[10px] text-green-700 font-bold uppercase mb-1">Engineer</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-engineer p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="JL">
+                        <img src="images/team/jesriel-lapig.jpg" alt="Jesriel Lapig">
+                    </div>
+                    <h4 class="text-sm font-bold">Jesriel Lapig</h4>
+                    <p class="text-[10px] text-green-700 font-bold uppercase mb-1">Engineer</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-engineer p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="JS">
+                        <img src="images/team/jovylem-siblag.jpg" alt="Jovylem Siblag">
+                    </div>
+                    <h4 class="text-sm font-bold">Jovylem Siblag</h4>
+                    <p class="text-[10px] text-green-700 font-bold uppercase mb-1">Engineer</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+                <div class="team-card team-support p-6 shadow-sm card-hover">
+                    <div class="member-photo mb-4" data-initials="AB">
+                        <img src="images/team/allyssa-bajalla.jpg" alt="Allyssa Bajalla">
+                    </div>
+                    <h4 class="text-sm font-bold">Allyssa Bajalla</h4>
+                    <p class="text-[10px] text-yellow-600 font-bold uppercase mb-1">Tech Support</p>
+                    <p class="text-[9px] text-gray-400 font-bold border-t pt-2 uppercase tracking-tighter">Researcher</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="navy-blue text-white pt-16 pb-8 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 border-b border-blue-800 pb-12 text-center md:text-left">
+            <div><h5 class="text-yellow-400 font-bold text-2xl uppercase italic">11</h5><p class="text-xs uppercase text-gray-400">Team Members</p></div>
+            <div><h5 class="text-yellow-400 font-bold text-2xl uppercase italic">01</h5><p class="text-xs uppercase text-gray-400">Global Mission</p></div>
+            <div><h5 class="text-yellow-400 font-bold text-2xl uppercase italic">100%</h5><p class="text-xs uppercase text-gray-400">Innovation Focus</p></div>
+            <div class="flex flex-col">
+                <a href="https://www.facebook.com/profile.php?id=61589787712105" target="_blank" class="accent-red text-center py-2 rounded font-bold uppercase hover:bg-red-700 transition tracking-widest">Connect</a>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            <div class="flex space-x-6 mb-4 md:mb-0">
+                <span>pest.patrol@gmail.com</span>
+                <span>0967-166-4849</span>
+            </div>
+            <div class="flex space-x-6 items-center">
+                <span>&copy; 2026 Pest Patrol Robotics Division</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.member-photo img').forEach((image) => {
+            image.addEventListener('error', () => {
+                image.style.display = 'none';
+            });
+        });
+
+        const robotSlides = document.querySelectorAll('.robot-slide');
+        const slideDots = document.querySelectorAll('.slide-dot');
+        const robotSlideLabel = document.getElementById('robot-slide-label');
+        const robotSlideTitle = document.getElementById('robot-slide-title');
+        const robotSlideDescription = document.getElementById('robot-slide-description');
+        const robotSlideText = [
+            {
+                label: 'Automated Spray System',
+                title: 'Controlled pesticide application',
+                description: 'The prototype is designed to carry pesticide and spray crops through a mounted delivery system.'
+            },
+            {
+                label: 'Mobile Farm Platform',
+                title: 'Built to move through crop areas',
+                description: 'The car base supports the spraying setup so treatment can be applied with less manual effort.'
+            },
+            {
+                label: 'Project Prototype',
+                title: 'Practical support for farm work',
+                description: 'Pest Patrol focuses on simple automation that helps make pesticide application more consistent and manageable.'
+            }
+        ];
+        let currentRobotSlide = 0;
+
+        function showRobotSlide(index) {
+            robotSlides[currentRobotSlide].classList.remove('active');
+            slideDots[currentRobotSlide].classList.remove('active');
+            currentRobotSlide = index;
+            robotSlides[currentRobotSlide].classList.add('active');
+            slideDots[currentRobotSlide].classList.add('active');
+            robotSlideLabel.textContent = robotSlideText[currentRobotSlide].label;
+            robotSlideTitle.textContent = robotSlideText[currentRobotSlide].title;
+            robotSlideDescription.textContent = robotSlideText[currentRobotSlide].description;
+        }
+
+        setInterval(() => {
+            showRobotSlide((currentRobotSlide + 1) % robotSlides.length);
+        }, 3500);
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function toggleTeam() {
+            const teamSection = document.getElementById('team-section');
+            if (teamSection.style.display === "none" || teamSection.style.display === "") {
+                teamSection.style.display = "block";
+                teamSection.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('mobile-menu').classList.add('hidden');
+            } else {
+                teamSection.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
