@@ -199,6 +199,11 @@
             background: #ffffff;
             border-radius: 0.75rem;
             overflow: hidden;
+            cursor: pointer;
+        }
+        .part-card:focus-visible {
+            outline: 3px solid rgba(20, 86, 143, 0.45);
+            outline-offset: 4px;
         }
         .part-media {
             aspect-ratio: 4 / 3;
@@ -213,8 +218,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 0.75rem;
+            padding: 0.2rem;
+            transform: scale(1.18);
+            transition: transform 0.25s ease;
             mix-blend-mode: multiply;
+        }
+        .part-card:hover .part-media img {
+            transform: scale(1.28);
         }
         .part-category {
             display: inline-flex;
@@ -226,6 +236,41 @@
             font-weight: 900;
             letter-spacing: 0.08em;
             text-transform: uppercase;
+        }
+        .part-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background: rgba(2, 6, 23, 0.72);
+            backdrop-filter: blur(10px);
+        }
+        .part-modal.open {
+            display: flex;
+        }
+        .part-modal-card {
+            width: min(960px, 100%);
+            max-height: 90vh;
+            overflow: auto;
+            background: #ffffff;
+            border-radius: 0.9rem;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+        }
+        .part-modal-image {
+            min-height: 280px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            display: grid;
+            place-items: center;
+        }
+        .part-modal-image img {
+            width: 100%;
+            max-height: 430px;
+            object-fit: contain;
+            padding: 1.25rem;
+            mix-blend-mode: multiply;
         }
     </style>
 </head>
@@ -785,11 +830,119 @@
         </div>
     </footer>
 
+    <div id="part-modal" class="part-modal" aria-hidden="true">
+        <div class="part-modal-card" role="dialog" aria-modal="true" aria-labelledby="part-modal-title">
+            <div class="grid grid-cols-1 lg:grid-cols-[420px_1fr]">
+                <div class="part-modal-image">
+                    <img id="part-modal-img" src="" alt="">
+                </div>
+                <div class="p-7 md:p-9">
+                    <div class="flex items-start justify-between gap-4 mb-5">
+                        <div>
+                            <p id="part-modal-category" class="text-xs font-black uppercase tracking-widest text-red-600 mb-2"></p>
+                            <h3 id="part-modal-title" class="text-3xl font-black text-blue-950 uppercase italic"></h3>
+                        </div>
+                        <button id="part-modal-close" class="w-10 h-10 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" aria-label="Close part details">
+                            <i class="fas fa-xmark"></i>
+                        </button>
+                    </div>
+                    <p id="part-modal-short" class="text-slate-600 leading-relaxed mb-5"></p>
+                    <div class="border-l-4 border-blue-900 bg-slate-50 p-5 rounded-r-md">
+                        <h4 class="text-sm font-black uppercase text-blue-950 mb-2">Full Explanation</h4>
+                        <p id="part-modal-detail" class="text-sm text-slate-600 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.querySelectorAll('.member-photo img').forEach((image) => {
             image.addEventListener('error', () => {
                 image.style.display = 'none';
             });
+        });
+
+        const partDetails = {
+            'Arduino Uno R3': 'The Arduino Uno R3 acts as a simple and reliable controller for the prototype. It can read sensor signals, send commands to modules, and coordinate basic actions such as switching, timing, and control logic during testing.',
+            'ESP32': 'The ESP32 adds a more capable controller option with wireless support. It can be used for future remote-control features, monitoring, or expanded automation where more processing power and connectivity are needed.',
+            'Relay Module': 'The relay module works as an electrical switch between the low-power controller and higher-power devices. In the project, it helps safely turn parts like the pump on and off without connecting heavy loads directly to the microcontroller.',
+            'Motor Driver Module': 'The motor driver module handles the power and control signals required by the chassis motors. It allows the controller to manage movement direction and speed while keeping motor current separate from the logic circuit.',
+            'Servo Channel Module': 'The servo channel module helps organize and control servo outputs. It is useful when the prototype needs accurate positioning for a moving arm, nozzle direction, or other mechanical adjustments.',
+            'Ultrasonic Sensor': 'The ultrasonic sensor measures distance by sending and receiving sound pulses. It supports obstacle awareness and testing for safer movement around nearby objects.',
+            'Line Tracking Sensor': 'The line tracking sensor detects contrast between a line and the surface below it. It is useful for path-following experiments where the vehicle needs to follow a marked route.',
+            '4WD Chassis Kit': 'The 4WD chassis kit is the moving base of Pest Patrol. It carries the controller, wiring, power supply, and spraying hardware while giving the prototype enough traction for movement tests.',
+            '4DOF Arm': 'The 4DOF arm provides adjustable mechanical movement. It can help position the sprayer or demonstrate how the prototype could aim or angle components during crop treatment.',
+            'Pump': 'The pump moves liquid from the container through the tubing. It is one of the main parts of the spraying system because it creates the flow needed for pesticide application.',
+            'Nozzle': 'The nozzle controls how the liquid exits the system. It helps turn the pumped liquid into a more useful spray pattern for crop coverage.',
+            'Tube': 'The tube forms the liquid pathway between the container, pump, connectors, and nozzle. Good tube placement helps prevent leaks and keeps the spray system organized.',
+            'Barb Connector': 'The barb connector joins tube sections or connects tubing to other spray components. Its ridged shape helps the tube grip tightly so the liquid line stays secure.',
+            'NCR Battery': 'The NCR battery provides portable power for the prototype. It allows the robot to operate without being plugged into a wall supply during demonstrations and movement tests.',
+            'Battery Holder': 'The battery holder keeps battery cells in place and maintains stable electrical contact. It also makes the power system cleaner and easier to service.',
+            'Buck Converter': 'The buck converter steps a higher battery voltage down to a lower regulated voltage. This protects boards and modules that need a specific safe input voltage.',
+            'Secondary Converter': 'The secondary converter provides another regulated voltage line for parts that may not share the same power requirement. Separating voltage levels helps keep the system more stable.',
+            'Rocker Switch': 'The rocker switch gives the prototype a physical power control. It makes startup and shutdown easier during testing, transport, and demonstrations.',
+            'Jumper Wires': 'Jumper wires are used for quick connections between modules, sensors, and controller pins. They are helpful during prototyping because wiring can be changed easily.',
+            'AWG Wire': 'AWG wire is used for stronger or longer electrical runs where jumper wires may not be ideal. It helps carry power and signals more securely inside the build.',
+            'M3 Standoffs': 'M3 standoffs create space between mounted parts and the chassis. They help protect boards, improve airflow, and keep wiring cleaner.',
+            'M3 Bolts and Nuts': 'M3 bolts and nuts fasten parts to the chassis and support structure. They keep components stable while the prototype moves or vibrates during operation.'
+        };
+
+        const partModal = document.getElementById('part-modal');
+        const partModalImg = document.getElementById('part-modal-img');
+        const partModalCategory = document.getElementById('part-modal-category');
+        const partModalTitle = document.getElementById('part-modal-title');
+        const partModalShort = document.getElementById('part-modal-short');
+        const partModalDetail = document.getElementById('part-modal-detail');
+        const partModalClose = document.getElementById('part-modal-close');
+
+        function openPartModal(card) {
+            const image = card.querySelector('.part-media img');
+            const title = card.querySelector('h5').textContent.trim();
+            const category = card.querySelector('.part-category').textContent.trim();
+            const shortText = card.querySelector('p').textContent.trim();
+
+            partModalImg.src = image.src;
+            partModalImg.alt = image.alt;
+            partModalCategory.textContent = category;
+            partModalTitle.textContent = title;
+            partModalShort.textContent = shortText;
+            partModalDetail.textContent = partDetails[title] || `${shortText} This component supports the Pest Patrol prototype by helping the system operate reliably during testing and demonstrations.`;
+            partModal.classList.add('open');
+            partModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            partModalClose.focus();
+        }
+
+        function closePartModal() {
+            partModal.classList.remove('open');
+            partModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.part-card').forEach((card) => {
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-label', `View details for ${card.querySelector('h5').textContent.trim()}`);
+            card.addEventListener('click', () => openPartModal(card));
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openPartModal(card);
+                }
+            });
+        });
+
+        partModalClose.addEventListener('click', closePartModal);
+        partModal.addEventListener('click', (event) => {
+            if (event.target === partModal) {
+                closePartModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && partModal.classList.contains('open')) {
+                closePartModal();
+            }
         });
 
         const robotSlides = document.querySelectorAll('.robot-slide');
