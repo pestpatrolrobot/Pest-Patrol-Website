@@ -13,6 +13,10 @@
             --green: #2f7d4f;
             --red: #c73535;
             --ink: #172033;
+            --gold: #f4b942;
+        }
+        body {
+            background: #f8fafc;
         }
         .hero-bg {
             background:
@@ -23,8 +27,36 @@
         .accent-red { background-color: var(--red); }
         .smooth-scroll { scroll-behavior: smooth; }
         #team-section { display: none; }
+        .site-nav {
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--red);
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .section-title {
+            color: #0b2f57;
+            font-weight: 900;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            font-style: italic;
+        }
         .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12); }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 18px 35px rgba(15, 23, 42, 0.12); border-color: rgba(20, 86, 143, 0.3); }
+        .hero-stat {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .hero-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1);
+        }
         .robot-visual {
             position: relative;
             min-height: 420px;
@@ -149,17 +181,31 @@
             font-weight: 900;
             letter-spacing: 0.08em;
         }
+        .qr-panel {
+            background:
+                linear-gradient(135deg, rgba(11, 47, 87, 0.98), rgba(20, 86, 143, 0.94)),
+                radial-gradient(circle at 90% 10%, rgba(244, 185, 66, 0.24), transparent 30%);
+        }
+        .qr-frame {
+            background: #ffffff;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 24px 60px rgba(2, 6, 23, 0.22);
+        }
+        .visit-badge img {
+            min-height: 24px;
+        }
     </style>
 </head>
 <body class="smooth-scroll font-sans text-gray-800">
 
-    <nav class="navy-blue text-white sticky top-0 z-50 px-6 shadow-lg">
+    <nav class="site-nav navy-blue text-white sticky top-0 z-50 px-6 shadow-lg">
         <div class="max-w-7xl mx-auto py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-black tracking-tighter uppercase italic">Pest Patrol</a>
             <div class="hidden md:flex items-center gap-7 text-sm font-semibold uppercase">
                 <a href="#home" class="hover:text-blue-200">Home</a>
                 <a href="#about" class="hover:text-blue-200">About Us</a>
                 <a href="#technology" class="hover:text-blue-200">Technology</a>
+                <a href="#qr-code" class="hover:text-blue-200">QR</a>
                 <button onclick="toggleTeam()" class="hover:text-blue-200 uppercase font-semibold">Team</button>
                 <a href="#contact" class="bg-white text-blue-900 px-4 py-2 rounded-md hover:bg-blue-100">Contact</a>
             </div>
@@ -171,6 +217,7 @@
             <a href="#home" class="block py-2">Home</a>
             <a href="#about" class="block py-2">About Us</a>
             <a href="#technology" class="block py-2">Technology</a>
+            <a href="#qr-code" class="block py-2">QR</a>
             <button onclick="toggleTeam()" class="block py-2 uppercase font-bold">Team</button>
             <a href="#contact" class="block py-2">Contact</a>
         </div>
@@ -196,15 +243,15 @@
                 <a href="#technology" class="border-2 border-blue-900 text-blue-900 px-6 py-4 rounded-md font-bold uppercase hover:bg-blue-900 hover:text-white transition-all text-center">Explore the Tech</a>
             </div>
             <div class="grid grid-cols-3 gap-4 mt-10 max-w-lg">
-                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                <div class="hero-stat bg-white/85 border border-white p-4 rounded-lg shadow-sm">
                     <div class="text-2xl font-black text-blue-900">11</div>
                     <div class="text-[10px] uppercase font-bold text-slate-500">Members</div>
                 </div>
-                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                <div class="hero-stat bg-white/85 border border-white p-4 rounded-lg shadow-sm">
                     <div class="text-2xl font-black text-blue-900">Auto</div>
                     <div class="text-[10px] uppercase font-bold text-slate-500">Spraying</div>
                 </div>
-                <div class="bg-white/80 border border-white p-4 rounded-lg shadow-sm">
+                <div class="hero-stat bg-white/85 border border-white p-4 rounded-lg shadow-sm">
                     <div class="text-2xl font-black text-blue-900">Eco</div>
                     <div class="text-[10px] uppercase font-bold text-slate-500">Focused</div>
                 </div>
@@ -236,8 +283,8 @@
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row gap-16 items-center">
                 <div class="md:w-1/2">
-                    <h2 class="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Our Mission</h2>
-                    <h3 class="text-4xl font-bold text-blue-900 mb-6 uppercase italic">Engineering a Sustainable Tomorrow</h3>
+                    <h2 class="section-kicker mb-2"><i class="fas fa-seedling"></i> Our Mission</h2>
+                    <h3 class="section-title text-4xl mb-6">Engineering a Sustainable Tomorrow</h3>
                     <p class="text-gray-600 leading-relaxed mb-6">
                         Pest Patrol was born from a singular vision: to bridge the gap between manual pesticide application and practical automation. Our system is designed as a mobile spraying car that helps farmers apply treatment more efficiently.
                     </p>
@@ -252,7 +299,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="md:w-1/2 bg-gray-100 p-8 rounded-xl border-b-8 border-blue-900 shadow-xl">
+                <div class="md:w-1/2 bg-slate-50 p-8 rounded-lg border border-slate-200 border-b-8 border-blue-900 shadow-xl">
                     <h4 class="font-black text-blue-900 uppercase mb-4 tracking-tighter">Why Pest Patrol?</h4>
                     <p class="text-sm text-gray-600 italic">"In an era where food security is paramount, we focus on a practical automated pesticide car that can help protect crops with controlled movement and spraying."</p>
                     <p class="mt-4 text-xs font-bold text-red-600 uppercase">- The Engineering Council</p>
@@ -263,8 +310,8 @@
 
     <section id="technology" class="py-24 px-6 bg-gray-50 border-t border-b">
         <div class="max-w-6xl mx-auto text-center mb-16">
-            <h2 class="text-xs font-black text-red-600 uppercase tracking-widest mb-2">Core Technology</h2>
-            <h3 class="text-4xl font-bold text-blue-900 uppercase italic">Next-Gen Capability</h3>
+            <h2 class="section-kicker mb-2"><i class="fas fa-gears"></i> Core Technology</h2>
+            <h3 class="section-title text-4xl">Next-Gen Capability</h3>
         </div>
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white p-8 rounded-xl shadow-md border-b-4 border-blue-900 card-hover">
@@ -281,6 +328,44 @@
                 <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-900 flex items-center justify-center mb-6"><i class="fas fa-robot text-2xl"></i></div>
                 <h4 class="font-bold text-blue-900 uppercase mb-2">Mobile Chassis</h4>
                 <p class="text-sm text-gray-600 leading-relaxed italic">A compact car base designed to move through farm areas while carrying the spray system.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="qr-code" class="py-24 px-6 bg-white">
+        <div class="max-w-6xl mx-auto qr-panel rounded-2xl overflow-hidden shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 items-center p-8 md:p-12">
+                <div class="text-white">
+                    <p class="inline-flex items-center gap-2 rounded-full bg-white/12 border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-yellow-200 mb-5">
+                        <i class="fas fa-qrcode"></i> Scan and Share
+                    </p>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase italic leading-tight mb-5">Open Pest Patrol on Any Phone</h3>
+                    <p class="text-blue-100 text-lg leading-relaxed max-w-2xl mb-8">
+                        Use this QR code for presentations, posters, and classroom demos. The counter below updates as visitors open the website.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://pestpatrolrobot.github.io/Pest-Patrol-Website/" target="_blank" class="bg-white text-blue-950 px-6 py-4 rounded-md font-black uppercase text-center hover:bg-yellow-100 transition">
+                            Open Website
+                        </a>
+                        <a href="#contact" class="border-2 border-white/70 text-white px-6 py-4 rounded-md font-black uppercase text-center hover:bg-white hover:text-blue-950 transition">
+                            Contact Team
+                        </a>
+                    </div>
+                </div>
+                <div class="qr-frame rounded-xl p-5 text-center">
+                    <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=16&data=https%3A%2F%2Fpestpatrolrobot.github.io%2FPest-Patrol-Website%2F"
+                        alt="QR code for the Pest Patrol website"
+                        class="w-full max-w-[260px] mx-auto rounded-md"
+                    >
+                    <p class="mt-4 text-xs font-black uppercase tracking-widest text-slate-500">Website Visits</p>
+                    <div class="visit-badge mt-2 flex justify-center">
+                        <img
+                            src="https://hits.sh/pestpatrolrobot.github.io/Pest-Patrol-Website.svg?label=Visitors&color=14568f&labelColor=0b2f57"
+                            alt="Pest Patrol website visitor count"
+                        >
+                    </div>
+                </div>
             </div>
         </div>
     </section>
