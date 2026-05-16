@@ -46,7 +46,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
         }
         .hero-logo-card {
-            width: min(220px, 58vw);
+            width: min(170px, 36vw);
             aspect-ratio: 1 / 1;
             display: grid;
             place-items: center;
@@ -56,7 +56,7 @@
             border-bottom: 6px solid var(--gold);
             border-radius: 1rem;
             box-shadow: 0 24px 55px rgba(8, 40, 79, 0.16);
-            padding: 1rem;
+            padding: 0.8rem;
         }
         .hero-logo-card img {
             width: 100%;
@@ -83,6 +83,13 @@
             height: 0.35rem;
             border-radius: 999px;
             background: linear-gradient(90deg, var(--red), var(--gold), var(--blue));
+        }
+        .hero-title-lockup {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 1.25rem;
+            max-width: 640px;
         }
         .section-kicker {
             display: inline-flex;
@@ -186,6 +193,11 @@
         .team-card {
             border-width: 2px;
             border-radius: 0.9rem;
+            cursor: pointer;
+        }
+        .team-card:focus-visible {
+            outline: 3px solid rgba(20, 86, 143, 0.45);
+            outline-offset: 4px;
         }
         .team-leader {
             border-color: #dc2626;
@@ -325,6 +337,31 @@
             padding: 1.25rem;
             mix-blend-mode: multiply;
         }
+        .team-modal-photo {
+            min-height: 320px;
+            background: linear-gradient(135deg, #eff6ff, #f8fafc);
+            display: grid;
+            place-items: center;
+        }
+        .team-modal-photo img {
+            width: 100%;
+            max-height: 480px;
+            object-fit: cover;
+            object-position: top center;
+        }
+        .team-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+        }
+        @media (max-width: 640px) {
+            .hero-title-lockup {
+                grid-template-columns: 1fr;
+            }
+            .team-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body class="smooth-scroll font-sans text-gray-800">
@@ -362,17 +399,21 @@
     <section id="home" class="hero-bg px-6 py-20 md:py-24">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
-            <div class="hero-logo-card mb-7">
-                <img src="images/logo.jpg" alt="Pest Patrol logo" class="site-logo">
-                <span class="logo-fallback">Pest<br>Patrol</span>
-            </div>
             <p class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-green-700 shadow-sm mb-5">
                 <i class="fas fa-leaf"></i> Autonomous Crop Protection
             </p>
-            <h1 class="text-5xl md:text-7xl font-black text-blue-950 leading-none mb-5 uppercase italic">
-                Pest Patrol
-            </h1>
-            <div class="hero-accent-line mb-5"></div>
+            <div class="hero-title-lockup mb-5">
+                <div>
+                    <h1 class="text-5xl md:text-7xl font-black text-blue-950 leading-none uppercase italic">
+                        Pest Patrol
+                    </h1>
+                    <div class="hero-accent-line mt-5"></div>
+                </div>
+                <div class="hero-logo-card">
+                    <img src="images/logo.jpg" alt="Pest Patrol logo" class="site-logo">
+                    <span class="logo-fallback">Pest<br>Patrol</span>
+                </div>
+            </div>
             <p class="text-2xl md:text-3xl font-black text-red-600 uppercase mb-5">
                 The Future of Crop Intelligence
             </p>
@@ -917,6 +958,46 @@
         </div>
     </div>
 
+    <div id="team-modal" class="part-modal" aria-hidden="true">
+        <div class="part-modal-card" role="dialog" aria-modal="true" aria-labelledby="team-modal-name">
+            <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr]">
+                <div class="team-modal-photo">
+                    <img id="team-modal-img" src="" alt="">
+                </div>
+                <div class="p-7 md:p-9">
+                    <div class="flex items-start justify-between gap-4 mb-5">
+                        <div>
+                            <p id="team-modal-role" class="text-xs font-black uppercase tracking-widest text-red-600 mb-2"></p>
+                            <h3 id="team-modal-name" class="text-3xl font-black text-blue-950 uppercase italic"></h3>
+                            <p id="team-modal-duty" class="text-sm font-bold text-slate-500 uppercase mt-1"></p>
+                        </div>
+                        <button id="team-modal-close" class="w-10 h-10 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" aria-label="Close member details">
+                            <i class="fas fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="team-info-grid mb-5">
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Age</p>
+                            <p id="team-modal-age" class="font-bold text-slate-800 mt-1"></p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Gmail</p>
+                            <p id="team-modal-email" class="font-bold text-slate-800 mt-1 break-words"></p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 md:col-span-2">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Address</p>
+                            <p id="team-modal-address" class="font-bold text-slate-800 mt-1"></p>
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-red-600 bg-red-50/60 p-5 rounded-r-md">
+                        <h4 class="text-sm font-black uppercase text-blue-950 mb-2">Motto</h4>
+                        <p id="team-modal-motto" class="text-sm text-slate-700 leading-relaxed italic"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.querySelectorAll('.member-photo img').forEach((image) => {
             image.addEventListener('error', () => {
@@ -1010,6 +1091,88 @@
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && partModal.classList.contains('open')) {
                 closePartModal();
+            }
+        });
+
+        const teamInfo = {
+            'Kiel Alcantara': {},
+            'Curt Tataro': {},
+            'Jared Vallangca': {},
+            'Angelo Rivera': {},
+            'Marinella Dela Cruz': {},
+            'Shaine Vasquez': {},
+            'Jewel Arce': {},
+            'John Paul Halili': {},
+            'Jesriel Lapig': {},
+            'Jovylem Siblag': {},
+            'Allyssa Bajalla': {}
+        };
+
+        const teamModal = document.getElementById('team-modal');
+        const teamModalImg = document.getElementById('team-modal-img');
+        const teamModalRole = document.getElementById('team-modal-role');
+        const teamModalName = document.getElementById('team-modal-name');
+        const teamModalDuty = document.getElementById('team-modal-duty');
+        const teamModalAge = document.getElementById('team-modal-age');
+        const teamModalEmail = document.getElementById('team-modal-email');
+        const teamModalAddress = document.getElementById('team-modal-address');
+        const teamModalMotto = document.getElementById('team-modal-motto');
+        const teamModalClose = document.getElementById('team-modal-close');
+
+        function displayMemberValue(value) {
+            return value && value.trim() ? value : 'Not provided yet';
+        }
+
+        function openTeamModal(card) {
+            const image = card.querySelector('.member-photo img');
+            const name = card.querySelector('h4').textContent.trim();
+            const role = card.querySelector('p').textContent.trim();
+            const duty = card.querySelectorAll('p')[1]?.textContent.trim() || 'Researcher';
+            const info = teamInfo[name] || {};
+
+            teamModalImg.src = image.src;
+            teamModalImg.alt = image.alt || name;
+            teamModalRole.textContent = role;
+            teamModalName.textContent = name;
+            teamModalDuty.textContent = duty;
+            teamModalAge.textContent = displayMemberValue(info.age);
+            teamModalEmail.textContent = displayMemberValue(info.gmail);
+            teamModalAddress.textContent = displayMemberValue(info.address);
+            teamModalMotto.textContent = displayMemberValue(info.motto);
+            teamModal.classList.add('open');
+            teamModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            teamModalClose.focus();
+        }
+
+        function closeTeamModal() {
+            teamModal.classList.remove('open');
+            teamModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.team-card').forEach((card) => {
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-label', `View member details for ${card.querySelector('h4').textContent.trim()}`);
+            card.addEventListener('click', () => openTeamModal(card));
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openTeamModal(card);
+                }
+            });
+        });
+
+        teamModalClose.addEventListener('click', closeTeamModal);
+        teamModal.addEventListener('click', (event) => {
+            if (event.target === teamModal) {
+                closeTeamModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && teamModal.classList.contains('open')) {
+                closeTeamModal();
             }
         });
 
