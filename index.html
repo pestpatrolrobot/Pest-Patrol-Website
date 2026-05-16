@@ -194,6 +194,39 @@
         .visit-badge img {
             min-height: 24px;
         }
+        .part-card {
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .part-media {
+            aspect-ratio: 4 / 3;
+            background:
+                linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+        }
+        .part-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 0.75rem;
+            mix-blend-mode: multiply;
+        }
+        .part-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 999px;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body class="smooth-scroll font-sans text-gray-800">
@@ -205,6 +238,7 @@
                 <a href="#home" class="hover:text-blue-200">Home</a>
                 <a href="#about" class="hover:text-blue-200">About Us</a>
                 <a href="#technology" class="hover:text-blue-200">Technology</a>
+                <a href="#parts" class="hover:text-blue-200">Parts</a>
                 <a href="#qr-code" class="hover:text-blue-200">QR</a>
                 <button onclick="toggleTeam()" class="hover:text-blue-200 uppercase font-semibold">Team</button>
                 <a href="#contact" class="bg-white text-blue-900 px-4 py-2 rounded-md hover:bg-blue-100">Contact</a>
@@ -217,6 +251,7 @@
             <a href="#home" class="block py-2">Home</a>
             <a href="#about" class="block py-2">About Us</a>
             <a href="#technology" class="block py-2">Technology</a>
+            <a href="#parts" class="block py-2">Parts</a>
             <a href="#qr-code" class="block py-2">QR</a>
             <button onclick="toggleTeam()" class="block py-2 uppercase font-bold">Team</button>
             <a href="#contact" class="block py-2">Contact</a>
@@ -328,6 +363,256 @@
                 <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-900 flex items-center justify-center mb-6"><i class="fas fa-robot text-2xl"></i></div>
                 <h4 class="font-bold text-blue-900 uppercase mb-2">Mobile Chassis</h4>
                 <p class="text-sm text-gray-600 leading-relaxed italic">A compact car base designed to move through farm areas while carrying the spray system.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="parts" class="py-24 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-12">
+                <h2 class="section-kicker mb-2"><i class="fas fa-screwdriver-wrench"></i> Project Parts</h2>
+                <h3 class="section-title text-4xl mb-5">Components We Used</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    These are the main electronics, mechanical parts, power components, and spraying materials used to build the Pest Patrol prototype.
+                </p>
+            </div>
+
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-10 h-10 rounded-lg bg-blue-50 text-blue-900 grid place-items-center"><i class="fas fa-microchip"></i></span>
+                    <div>
+                        <h4 class="text-xl font-black text-blue-950 uppercase">Control and Electronics</h4>
+                        <p class="text-sm text-slate-500">Boards and modules that control movement, sensing, switching, and automation.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/Arduino_Uno_-_R3.jpg" alt="Arduino Uno R3"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-blue-50 text-blue-900"><i class="fas fa-microchip"></i> Controller</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Arduino Uno R3</h5>
+                            <p class="mt-2 text-sm text-slate-600">Main microcontroller used for basic logic, signal handling, and component control.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/esp32.jpg" alt="ESP32 board"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-blue-50 text-blue-900"><i class="fas fa-wifi"></i> Controller</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">ESP32</h5>
+                            <p class="mt-2 text-sm text-slate-600">Compact control board that can support wireless features and additional automation logic.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/relay module.jpg" alt="Relay module"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-blue-50 text-blue-900"><i class="fas fa-toggle-on"></i> Switching</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Relay Module</h5>
+                            <p class="mt-2 text-sm text-slate-600">Switches higher-power parts like the pump from low-power control signals.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/tbb612 module.jpg" alt="Motor driver module"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-blue-50 text-blue-900"><i class="fas fa-gauge-high"></i> Motor Driver</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Motor Driver Module</h5>
+                            <p class="mt-2 text-sm text-slate-600">Controls motor direction and speed so the chassis can move properly.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/servo channel.jpg" alt="Servo channel module"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-blue-50 text-blue-900"><i class="fas fa-sliders"></i> Servo Control</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Servo Channel Module</h5>
+                            <p class="mt-2 text-sm text-slate-600">Helps manage servo movement for positioning and controlled mechanical motion.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-10 h-10 rounded-lg bg-green-50 text-green-700 grid place-items-center"><i class="fas fa-route"></i></span>
+                    <div>
+                        <h4 class="text-xl font-black text-blue-950 uppercase">Sensors and Movement</h4>
+                        <p class="text-sm text-slate-500">Parts that help the prototype detect surroundings, follow paths, and move as a vehicle.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/hcr sensor.jpg" alt="Ultrasonic sensor"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-green-50 text-green-700"><i class="fas fa-wave-square"></i> Sensor</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Ultrasonic Sensor</h5>
+                            <p class="mt-2 text-sm text-slate-600">Measures distance so the robot can detect nearby objects or obstacles.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/line tracking.jpg" alt="Line tracking sensor"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-green-50 text-green-700"><i class="fas fa-road"></i> Sensor</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Line Tracking Sensor</h5>
+                            <p class="mt-2 text-sm text-slate-600">Supports path-following tests by detecting dark or light guide lines.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/4wd chassis kit.jpg" alt="4WD chassis kit"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-green-50 text-green-700"><i class="fas fa-car-side"></i> Chassis</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">4WD Chassis Kit</h5>
+                            <p class="mt-2 text-sm text-slate-600">Vehicle base that carries the electronics, pump, container, and sprayer setup.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/4dof arm.jpg" alt="4DOF robotic arm"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-green-50 text-green-700"><i class="fas fa-robot"></i> Mechanism</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">4DOF Arm</h5>
+                            <p class="mt-2 text-sm text-slate-600">Mechanical arm used for positioning or adjusting the spray direction during testing.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="w-10 h-10 rounded-lg bg-red-50 text-red-600 grid place-items-center"><i class="fas fa-spray-can-sparkles"></i></span>
+                    <div>
+                        <h4 class="text-xl font-black text-blue-950 uppercase">Spraying System</h4>
+                        <p class="text-sm text-slate-500">Water and pesticide flow parts used to move liquid from the container to the nozzle.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/pump.jpg" alt="Water pump"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-red-50 text-red-600"><i class="fas fa-droplet"></i> Flow</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Pump</h5>
+                            <p class="mt-2 text-sm text-slate-600">Pushes liquid through the tube so pesticide can be sprayed from the nozzle.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/nozzle.jpg" alt="Spray nozzle"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-red-50 text-red-600"><i class="fas fa-fan"></i> Spray</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Nozzle</h5>
+                            <p class="mt-2 text-sm text-slate-600">Shapes the liquid output into a spray pattern for crop application.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/tube.jpg" alt="Flexible tube"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-red-50 text-red-600"><i class="fas fa-link"></i> Flow</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Tube</h5>
+                            <p class="mt-2 text-sm text-slate-600">Carries liquid from the tank or pump toward the spray nozzle.</p>
+                        </div>
+                    </article>
+                    <article class="part-card card-hover">
+                        <div class="part-media"><img src="images/parts/barb connector.jpg" alt="Barb connector"></div>
+                        <div class="p-5">
+                            <span class="part-category bg-red-50 text-red-600"><i class="fas fa-plug"></i> Fitting</span>
+                            <h5 class="mt-3 font-black text-slate-900 uppercase">Barb Connector</h5>
+                            <p class="mt-2 text-sm text-slate-600">Connects tubes securely so the liquid path stays stable during operation.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-700 grid place-items-center"><i class="fas fa-battery-full"></i></span>
+                        <div>
+                            <h4 class="text-xl font-black text-blue-950 uppercase">Power Supply</h4>
+                            <p class="text-sm text-slate-500">Battery and voltage parts that provide usable power for the robot.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/ncr batterry.jpg" alt="NCR battery"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-yellow-50 text-yellow-700"><i class="fas fa-battery-half"></i> Battery</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">NCR Battery</h5>
+                                <p class="mt-2 text-sm text-slate-600">Rechargeable power source for the mobile prototype.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/battery holder.jpg" alt="Battery holder"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-yellow-50 text-yellow-700"><i class="fas fa-box"></i> Holder</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">Battery Holder</h5>
+                                <p class="mt-2 text-sm text-slate-600">Keeps batteries mounted and connected safely to the circuit.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/buck converter1.png" alt="Buck converter"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-yellow-50 text-yellow-700"><i class="fas fa-bolt"></i> Voltage</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">Buck Converter</h5>
+                                <p class="mt-2 text-sm text-slate-600">Steps voltage down to a safer level for boards and modules.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/buck converter2.png" alt="Second buck converter"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-yellow-50 text-yellow-700"><i class="fas fa-bolt-lightning"></i> Voltage</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">Secondary Converter</h5>
+                                <p class="mt-2 text-sm text-slate-600">Provides another regulated output for parts that need a different voltage level.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/rocker switch.jpg" alt="Rocker switch"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-yellow-50 text-yellow-700"><i class="fas fa-power-off"></i> Switch</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">Rocker Switch</h5>
+                                <p class="mt-2 text-sm text-slate-600">Provides a simple physical on/off control for the system.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 grid place-items-center"><i class="fas fa-screwdriver"></i></span>
+                        <div>
+                            <h4 class="text-xl font-black text-blue-950 uppercase">Wiring and Assembly</h4>
+                            <p class="text-sm text-slate-500">Connection and mounting materials used to assemble the prototype cleanly.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/jumper wires.jpg" alt="Jumper wires"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-slate-100 text-slate-700"><i class="fas fa-grip-lines"></i> Wiring</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">Jumper Wires</h5>
+                                <p class="mt-2 text-sm text-slate-600">Connects modules and sensors during prototyping and testing.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/awg wire.jpg" alt="AWG wire"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-slate-100 text-slate-700"><i class="fas fa-cable-car"></i> Wiring</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">AWG Wire</h5>
+                                <p class="mt-2 text-sm text-slate-600">Used for longer or stronger electrical connections inside the robot.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/m3 standoffs.jpg" alt="M3 standoffs"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-slate-100 text-slate-700"><i class="fas fa-layer-group"></i> Mounting</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">M3 Standoffs</h5>
+                                <p class="mt-2 text-sm text-slate-600">Raises and secures boards or panels with clean spacing.</p>
+                            </div>
+                        </article>
+                        <article class="part-card card-hover">
+                            <div class="part-media"><img src="images/parts/m3 bolts and nuts.jpg" alt="M3 bolts and nuts"></div>
+                            <div class="p-5">
+                                <span class="part-category bg-slate-100 text-slate-700"><i class="fas fa-circle-nodes"></i> Mounting</span>
+                                <h5 class="mt-3 font-black text-slate-900 uppercase">M3 Bolts and Nuts</h5>
+                                <p class="mt-2 text-sm text-slate-600">Fasteners used to attach parts to the chassis and support structure.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
